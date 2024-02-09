@@ -1,6 +1,11 @@
+
+:root {
+  --header-height: 35px;
+}
+
 #app {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: var(--header-height) 0 auto;
   padding: 2rem;
   font-weight: normal;
 }
@@ -30,4 +35,71 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
+}
+
+input, select {
+  height: 44px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+input + .input-addon, select + .input-addon, input + .input-addon__required, select + .input-addon__required {
+  margin-top: 20px;
+}
+
+.input-addon, .input-addon__required {
+  position: relative;
+  color: #b3c1d1;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+  margin-bottom: 5px;
+  width: fit-content;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-all;
+  padding-right: 5px;
+}
+.input-addon__required:after {
+  content: '*';
+  position: absolute;
+  color: #d80027;
+  top: -2px;
+  right: 0;
+}
+
+button {
+  padding: 12px 15px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 20px;
+  border-radius: 8px;
+  color: #fff;
+  transition: all .2s;
+  background: linear-gradient(180deg,#4e60a4,#2e3f7f);
 }

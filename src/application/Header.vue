@@ -8,14 +8,14 @@
 <script setup lang="ts">
 
 import {computed} from "vue";
-import ToDoListCacheManager from "@/libs/casheManager/TodoListCacheManager";
-import {getCountTaskByType} from "@/libs/todoList/TodoListHelper";
+import TaskListCacheManager from "@/libs/casheManager/TaskListCacheManager";
+import {getCountTaskByType} from "@/libs/taskList/TaskListHelper";
+
 import type {ITaskItem} from "@/Interface/ITaskItem";
 
-const todoListManager = ToDoListCacheManager;
 
 const taskList = computed<ITaskItem[]>(()=> {
-    const todoList = todoListManager.getList();
+    const todoList = TaskListCacheManager.getList();
     if (todoList !== null) {
         return todoList;
     }
@@ -29,15 +29,15 @@ const title = computed<string>(() => {
 
     const description = [];
 
-    // Склонять не хочется :(
+    // чуть костылей для склонений:(
     if (count.done > 0) {
-        description.push(`вы уже выполнили ${count.done} задач`)
+        description.push(`вы уже выполнили ${count.done} ${DeclByNum(count.done, ['задачу', 'задачи', 'задач'])}`)
     }
     if (count.hold > 0) {
-        description.push(`необходимо выполнить ${count.hold} задач`)
+        description.push(`необходимо выполнить ${count.hold} ${DeclByNum(count.hold, ['задачу', 'задачи', 'задач'])}`)
     }
     if (count.progress > 0) {
-        description.push(`в данный момент выполняется ${count.hold} задач`)
+        description.push(`в данный момент выполняется ${count.hold} ${DeclByNum(count.hold, ['задача', 'задачи', 'задач'])}`)
     }
     if (description.length === 0) {
         description.push(`На сегодня задач нет, можно отдохнуть:)`)
@@ -49,7 +49,7 @@ const title = computed<string>(() => {
 
 <style scoped>
 .headerBlock {
-    height: 35px;
+    height: var(--header-height);
     width: 100%;
     position: fixed;
     top: 0;

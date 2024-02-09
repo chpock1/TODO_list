@@ -5,7 +5,7 @@ export default class BaseCacheManager {
     private static manager = LocalStoreManager();
 
     protected static CONF = {
-        todoList: 'TODO_LIST',
+        taskList: 'TASK_LIST',
     }
 
     protected static set(value: any, key: string): boolean {
