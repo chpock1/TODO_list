@@ -9,8 +9,8 @@
     <!--фильтры-->
     <TaskListFilters
         v-if="taskList.length"
-        v-model:status="filters.status"
-        v-model:tag="filters.tag"
+        v-model:status="filters.status.value"
+        v-model:tag="filters.tag.value"
     />
 
     <Transition name="fade" mode="out-in">

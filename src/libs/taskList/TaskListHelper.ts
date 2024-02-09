@@ -1,5 +1,6 @@
 import type {ITaskItem}     from "@/Interface/ITaskItem";
 import type {TTaskStatus}   from "@/Interface/TTaskStatus";
+import type {ISelectOption} from "@/Interface/ISelectOption";
 
 export function getCountTaskByType(taskList: ITaskItem[]) {
     let count: Record<TTaskStatus, number> = {
@@ -13,7 +14,7 @@ export function getCountTaskByType(taskList: ITaskItem[]) {
     return count;
 }
 
-export const taskStatusList = [
+export const taskStatusList: ISelectOption<string>[] = [
     { value: 'done', label: 'Выполнено'},
     { value: 'progress', label: 'В процессе'},
     { value: 'hold', label: 'Не начато'},
