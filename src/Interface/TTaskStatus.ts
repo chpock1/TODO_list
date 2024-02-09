@@ -1,0 +1,1 @@
+export type TTaskStatus = 'done' | 'progress' | 'hold'
