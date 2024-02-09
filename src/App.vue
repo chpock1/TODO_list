@@ -1,12 +1,10 @@
 <template>
-<header>
-    <Header/>
-</header>
+<TheHeader/>
 <TaskList/>
 </template>
 
 <script setup lang="ts">
-import Header from "@/application/Header.vue"
+import TheHeader from "@/application/TheHeader.vue"
 import TaskList from "@/application/TaskList.vue";
 
 </script>

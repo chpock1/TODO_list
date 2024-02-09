@@ -14,8 +14,8 @@ export function getCountTaskByType(taskList: ITaskItem[]) {
     return count;
 }
 
-export const taskStatusList: ISelectOption<string>[] = [
-    { value: 'done', label: 'Выполнено'},
-    { value: 'progress', label: 'В процессе'},
-    { value: 'hold', label: 'Не начато'},
-]
+export const taskStatusList: Record<TTaskStatus, string> = {
+    done:  'Выполнено',
+    progress:  'В процессе',
+    hold:  'Не начато',
+}

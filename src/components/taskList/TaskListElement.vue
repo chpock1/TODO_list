@@ -1,8 +1,8 @@
 <template>
-<section>
-    {{task.name}}
-    {{task.description}}
-    {{task.status}}
+<section class="listElement">
+    <p>Имя: {{task.name}}</p>
+    <p>Описание: {{task.description}}</p>
+    <p class="elementStatus">Статус: {{taskStatusList[task.status]}}</p>
 </section>
 
 
@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import type {ITaskItem} from "@/Interface/ITaskItem";
+import {taskStatusList} from "@/libs/taskList/TaskListHelper";
 
 interface IProps {
     task: ITaskItem,
@@ -26,6 +27,19 @@ const emits = defineEmits<IEmits>();
 
 </script>
 
-<style module>
-
+<style scoped>
+.listElement {
+    margin-top: 15px;
+    padding: 15px 20px;
+    border-radius: 10px;
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.elementStatus {
+    align-self: flex-end;
+}
 </style>

@@ -1,7 +1,9 @@
 <template>
-<div class="headerBlock">
-    {{ title }}
-</div>
+<header>
+    <div class="headerBlock">
+        {{ title }}
+    </div>
+</header>
 </template>
 
 

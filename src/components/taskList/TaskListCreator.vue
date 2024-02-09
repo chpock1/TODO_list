@@ -1,5 +1,5 @@
 <template>
-<Dialog :show="show" width="400px" @update:show="emits('update:show', $event)">
+<IMModal :show="show" width="400px" @update:show="emits('update:show', $event)">
     <div class="root">
         <h3>Создание задачи</h3>
         <div class="input-addon__required">Название</div>
@@ -8,22 +8,17 @@
         <div class="input-addon">Описание</div>
         <input v-model="newTask.description"/>
 
-        <div class="input-addon__required">Статус</div>
-        <Select :options="taskStatusList" v-model:value="newTask.status"/>
-
         <button class="saveButton" @click="createTask()">Сохранить</button>
     </div>
-</Dialog>
+</IMModal>
 </template>
 
 <script setup lang="ts">
 import {ref} from "vue";
 
-import Dialog from "@/components/ui/Dialog.vue";
+import IMModal from "@/components/ui/IMModal.vue";
 
 import type {ITaskItem} from "@/Interface/ITaskItem";
-import Select from "@/components/ui/Select.vue";
-import {taskStatusList} from "@/libs/taskList/TaskListHelper";
 
 interface IProps {
     show: boolean,

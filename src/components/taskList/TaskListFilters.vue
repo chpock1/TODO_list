@@ -1,26 +1,25 @@
 <template>
-<Select :options="taskStatusList" :value="status" @update:value="emits('update:status', $event)"/>
+<IMSelect :options="options" :value="status" @update:value="emits('update:status', $event)"/>
 
 </template>
 
 
 <script setup lang="ts">
-import Select from "@/components/ui/Select.vue";
+import IMSelect from "@/components/ui/IMSelect.vue";
 import {taskStatusList} from "@/libs/taskList/TaskListHelper";
 
 interface IProps {
     status: string,
-    tag: string,
 }
 
 interface IEmits {
-    (event: 'update:status', value: string,): void,
-    (event: 'update:tag', value: string,): void,
+    (event: 'update:status', value: string|number,): void,
 }
 
 const props = defineProps<IProps>();
 const emits = defineEmits<IEmits>();
 
+const options = Object.entries(taskStatusList).map(([value, label]) => ({value, label}))
 
 </script>
 

@@ -2,15 +2,10 @@
 <div>
     <!--кнопка создания задачи-->
     <button @click="openTaskCreator()">Создать</button>
-
-    <!--окно создания задачи-->
-    <TaskListCreator v-model:show="showCreateTask" @createTask="createTask($event)"/>
-
     <!--фильтры-->
     <TaskListFilters
         v-if="taskList.length"
         v-model:status="filters.status.value"
-        v-model:tag="filters.tag.value"
     />
 
     <Transition name="fade" mode="out-in">
@@ -31,6 +26,8 @@
             @clearFilter="clearFilter"
         />
     </Transition>
+    <!--окно создания задачи-->
+    <TaskListCreator v-model:show="showCreateTask" @createTask="createTask($event)"/>
 </div>
 </template>
 
@@ -47,34 +44,32 @@ import TaskListCreator from "@/components/taskList/TaskListCreator.vue";
 import TaskListElement from "@/components/taskList/TaskListElement.vue";
 
 
-const taskList = TaskListCacheManager.getList() || [];
+const taskList = ref<ITaskItem[]>(TaskListCacheManager.getList() || []);
 
 const showCreateTask = ref(false);
 const filters = {
-    tag: ref(''),
     status: ref(''),
 
 }
 
 const filteredList = computed<ITaskItem[]>(()=> {
-    return taskList.filter(task => task.status === filters.status.value)
+    return taskList.value.filter(task => task.status.includes(filters.status.value))
 })
 
 const clearFilter = () => {
-  filters.tag.value = '';
   filters.status.value = '';
 }
 
 const updateTaskList = () => {
-    TaskListCacheManager.setList(taskList);
+    TaskListCacheManager.setList(taskList.value);
 }
 
 const openTaskCreator = () => {
     showCreateTask.value = true;
 }
 const createTask = (task: ITaskItem) => {
-    task.id = taskList.length + 1
-    taskList.push(task);
+    task.id = taskList.value.length + 1
+    taskList.value.push(task);
     updateTaskList();
 }
 
