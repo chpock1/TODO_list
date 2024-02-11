@@ -78,6 +78,13 @@ input, select, textarea {
   border-radius: 6px;
   transition: all 0.2s;
 }
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px;
+  border-color: #0560FD;
+}
 
 input + .input-addon, select + .input-addon, input + .input-addon__required, select + .input-addon__required {
   margin-top: 20px;
@@ -108,7 +115,7 @@ input + .input-addon, select + .input-addon, input + .input-addon__required, sel
   right: 0;
 }
 
-button {
+.btn {
   height: var(--ui-element-height);
   padding: 0 20px;
   font-size: 12px;

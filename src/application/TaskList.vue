@@ -9,7 +9,7 @@
         <TaskListSearch
             v-model:search="filters.search"
         />
-        <button class="headerAddBtn" @click="openTaskCreator()">Добавить задачу</button>
+        <button class="btn headerAddBtn" @click="openTaskCreator()">Добавить задачу</button>
     </div>
     <h1 class="title">Список задач</h1>
     <!--фильтры-->
@@ -29,6 +29,7 @@
                 :key="task.id"
                 :task="task"
                 class="task"
+                @update:status="updateTaskStatus(task, $event)"
                 @click="openTaskCreator(task)"
             />
         </div>
@@ -128,6 +129,11 @@ const deleteTask = (id: number) => {
     if(editedIndex !== -1) {
         taskList.value.splice(editedIndex, 1)
     }
+    updateTaskList();
+}
+
+const updateTaskStatus = (task: ITaskItem, status: TTaskStatus) => {
+    task.status = status;
     updateTaskList();
 }
 

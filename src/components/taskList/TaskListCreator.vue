@@ -14,8 +14,8 @@
             :options="categoryOptions"
         />
 
-        <button class="saveButton" @click="createTask()">Сохранить</button>
-        <button v-if="newTask.id>=0" class="deleteBtn" @click="deleteTask()">Удалить</button>
+        <button class="btn saveButton" @click="createTask()">Сохранить</button>
+        <button v-if="newTask.id>=0" class="btn deleteBtn" @click="deleteTask()">Удалить</button>
     </div>
 </IMModal>
 </template>

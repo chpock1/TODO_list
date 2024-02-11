@@ -1,16 +1,31 @@
 <template>
 <section class="listElement">
-    <div class="d-flex">
+    <div class="categoryWrap">
+        <input type="checkbox" @click.stop>
         <h1
-            v-if="categoryInfo"
             :class="['category', categoryInfo.color_code]"
         >
             {{ categoryInfo.label }}
         </h1>
+        <IMPopover>
+            <template #title>
+                <Action class="moreBtn"/>
+            </template>
+            <template #content>
+                <p
+                    v-for="(status, value) of taskStatusList"
+                    :key="value"
+                    @click="emits('update:status', value)"
+                >
+                    {{status}}
+                </p>
+            </template>
+        </IMPopover>
 
     </div>
     <h2 class="title trim-lines">{{task.name}}</h2>
     <p class="description trim-lines">{{task.description}}</p>
+    <span class="elementStatus">{{taskStatusList[task.status]}}</span>
 </section>
 
 
@@ -18,9 +33,12 @@
 
 
 <script setup lang="ts">
-import type {ITaskItem} from "@/Interface/ITaskItem";
-import {taskCategoryList, taskStatusList} from "@/libs/taskList/TaskListHelper";
 import {computed} from "vue";
+import {taskCategoryList, taskStatusList} from "@/libs/taskList/TaskListHelper";
+import type {ITaskItem} from "@/Interface/ITaskItem";
+
+import Action from "@/components/icons/Action";
+import IMPopover from "@/components/ui/IMPopover.vue";
 
 interface IProps {
     task: ITaskItem,
@@ -28,14 +46,22 @@ interface IProps {
 
 interface IEmits {
     (event: 'update:status', value: string,): void,
-    (event: 'update:tag', value: string,): void,
 }
 
 const props = defineProps<IProps>();
 const emits = defineEmits<IEmits>();
 
 const categoryInfo = computed(() => {
-    return props.task.category && taskCategoryList[props.task.category];
+    if(props.task.category) {
+        return taskCategoryList[props.task.category]
+    }
+    else {
+        return {
+            label: '',
+            value: '',
+            color_code: '',
+        }
+    }
 })
 </script>
 
@@ -47,10 +73,19 @@ const categoryInfo = computed(() => {
     position: relative;
     cursor: pointer;
 }
+.categoryWrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 .category {
     color: var(--task-color);
     flex-basis: 100%;
     margin: 0;
+    margin-left: 5px;
+}
+.moreBtn {
+
 }
 .title {
     font-weight: 600;

@@ -3,7 +3,7 @@
     <button
         v-for="(label, value) in taskStatusList"
         :key="value"
-        :class="['statusBtn', value!==status && 'statusBtnUnActive']"
+        :class="['btn', 'statusBtn', value!==status && 'statusBtnUnActive']"
         @click="updateSelectedStatus(value)"
     >
         {{ label }}
