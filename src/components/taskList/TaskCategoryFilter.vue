@@ -2,12 +2,12 @@
 <div class="categoryWrap">
 
     <div
-        v-for="category of visibleCategories"
-        :key="category.value"
-        :class="['category', category.color_code]"
-        @click="setCategory(category.value)"
+        v-for="cat of visibleCategories"
+        :key="cat.value"
+        :class="['category', cat.color_code, category === cat.value && 'category-active']"
+        @click="setCategory(cat.value)"
     >
-        {{ category.label }}
+        {{ cat.label }}
 
     </div>
 </div>
@@ -47,16 +47,25 @@ const setCategory = (value: TTaskCategory) => {
 <style scoped>
 .categoryWrap {
     display: flex;
+    margin-right: 30px;
     @media screen and (max-width: 991px) {
         display: none;
     }
 }
 .category {
+    display: flex;
+    align-items: center;
     cursor: pointer;
     color: var(--task-color);
     border: 1px solid var(--task-color);
-    padding: 15px 30px;
+    height: var(--ui-element-height);
+    padding: 0 30px;
     border-radius: 4px;
     margin-left: 25px;
+    transition: all .2s;
+}
+.category-active {
+    color: #FFF;
+    background-color: var(--task-color);
 }
 </style>

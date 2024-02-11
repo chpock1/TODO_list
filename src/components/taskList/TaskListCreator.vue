@@ -1,52 +1,65 @@
 <template>
-<IMModal :show="show" width="400px" @update:show="emits('update:show', $event)">
-    <div class="root">
+<IMModal :show="show" width="400px" @update:show="emits('close')">
+    <div v-if="show" class="root">
         <h3>Создание задачи</h3>
         <div class="input-addon__required">Название</div>
         <input v-model="newTask.name"/>
 
-        <div class="input-addon">Описание</div>
+        <div class="input-addon__required">Описание</div>
         <textarea v-model="newTask.description"/>
 
         <div class="input-addon">Категория</div>
-        <textarea v-model="newTask.description"/>
+        <IMSelect
+            v-model:value="newTask.category"
+            :options="categoryOptions"
+        />
 
         <button class="saveButton" @click="createTask()">Сохранить</button>
+        <button v-if="newTask.id>=0" class="deleteBtn" @click="deleteTask()">Удалить</button>
     </div>
 </IMModal>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-
 import IMModal from "@/components/ui/IMModal.vue";
 
 import type {ITaskItem} from "@/Interface/ITaskItem";
+import IMSelect from "@/components/ui/IMSelect.vue";
+import {taskCategoryList} from "@/libs/taskList/TaskListHelper";
 
 interface IProps {
-    show: boolean,
+    task: ITaskItem,
+    show: boolean
 }
 
 interface IEmits {
-    (event: 'update:show', value: boolean,): void,
     (event: 'createTask', task: ITaskItem): void
+    (event: 'close'): void
+    (event: 'deleteTask', id: number): void
 }
 
 const props = defineProps<IProps>();
 const emits = defineEmits<IEmits>();
 
-const newTask = ref<ITaskItem>({
-    id: 0,
-    name: "",
-    description: "",
-    status: 'hold',
-    category: null,
-})
+const newTask = Object.assign(props.task)
+
+const categoryOptions = Object.values(taskCategoryList);
+
+const validateFields = (): boolean => {
+    const validValues = [newTask.name, newTask.description];
+    return !validValues.includes('');
+}
 
 const createTask = () => {
-    emits('createTask', newTask.value);
-    emits('update:show', false);
-
+    if(validateFields()) {
+        emits('createTask', newTask);
+    }
+    else {
+        alert('Заполните обязательные поля');
+    }
+}
+const deleteTask = () => {
+    emits('deleteTask', newTask.id);
 }
 
 </script>
@@ -57,11 +70,16 @@ const createTask = () => {
     background-color: #fff;
     border: 0;
     box-shadow: 0 4px 12px #00000026;
-    padding: 10px 30px;
+    padding: 20px 30px;
     border-radius: 5px;
     min-height: 300px;
 }
 .saveButton {
+    margin-top: 30px;
+    width: 100%;
+}
+.deleteBtn {
+    background-color: #F44336;
     margin-top: 30px;
     width: 100%;
 }

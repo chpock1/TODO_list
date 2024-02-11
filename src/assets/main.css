@@ -1,6 +1,7 @@
 
 :root {
-  --header-height: 35px;
+  --ui-element-height: 44px;
+
 
   --task-color-blue: #0560FD;
   --task-color-green: #14BCA8;
@@ -54,8 +55,8 @@ a,
   }
 }
 
-input, select {
-  height: 44px;
+input, select, textarea {
+  height: var(--ui-element-height);
   box-sizing: border-box;
   margin: 0;
   padding: 4px 11px;
@@ -107,7 +108,8 @@ input + .input-addon, select + .input-addon, input + .input-addon__required, sel
 }
 
 button {
-  padding: 15px 20px;
+  height: var(--ui-element-height);
+  padding: 0 20px;
   font-size: 12px;
   cursor: pointer;
   display: flex;

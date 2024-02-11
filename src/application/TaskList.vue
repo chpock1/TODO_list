@@ -2,16 +2,21 @@
 <div>
     <div class="tasksHeader">
         <TaskListLogo class="logo"/>
+
         <TaskCategoryFilter
-            v-model:category="filters.category.value"
+            v-model:category="filters.category"
+        />
+        <TaskListSearch
+            v-model:search="filters.search"
         />
         <button class="headerAddBtn" @click="openTaskCreator()">Добавить задачу</button>
     </div>
     <p class="title">Список задач</p>
     <!--фильтры-->
+
     <TaskStatusFilter
 
-        v-model:status="filters.status.value"
+        v-model:status="filters.status"
         class="statusFilter"
     />
 
@@ -24,6 +29,7 @@
                 :key="task.id"
                 :task="task"
                 class="task"
+                @click="openTaskCreator(task)"
             />
         </div>
 
@@ -35,13 +41,21 @@
         />
     </Transition>
     <!--окно создания задачи-->
-    <TaskListCreator v-model:show="showCreateTask" @createTask="createTask($event)"/>
+    <TaskListCreator
+        v-if="detailInfoTask !== null"
+        :task="detailInfoTask"
+        :show="detailInfoTask !== null"
+
+        @close="detailInfoTask = null"
+        @createTask="createTask($event)"
+        @deleteTask="deleteTask($event)"
+    />
 </div>
 </template>
 
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, reactive, ref} from "vue";
 import TaskListCacheManager from "@/libs/casheManager/TaskListCacheManager";
 
 import TaskListEmpty from "@/components/taskList/TaskListEmpty";
@@ -54,36 +68,65 @@ import type {TTaskCategory} from "@/Interface/TTaskCategory";
 import TaskListLogo from "@/components/taskList/TaskListLogo.vue";
 import TaskStatusFilter from "@/components/taskList/TaskStatusFilter.vue";
 import type {TTaskStatus} from "@/Interface/TTaskStatus";
+import TaskListSearch from "@/components/taskList/TaskListSearch.vue";
+import getDefaultTask from "@/libs/default/getDefaultTask";
+import clone from "@/libs/general/DeepClone";
 
 
 const taskList = ref<ITaskItem[]>(TaskListCacheManager.getList() || []);
 
-const showCreateTask = ref(false);
-const filters = {
-    status: ref<null|TTaskStatus>(null),
-    category: ref<null|TTaskCategory>(null)
-}
+const detailInfoTask = ref<null|ITaskItem>(null);
+const filters = reactive({
+    status: null as null|TTaskStatus,
+    category: null as null|TTaskCategory,
+    search: '',
+})
 
 const filteredList = computed<ITaskItem[]>(()=> {
     return taskList.value.filter(task => {
-        return true
+        const inсludeBySearch = (task.description + task.name).includes(filters.search)
+        const inсludeByCategory = filters.category === null || filters.category === task.category
+        const inсludeByStatus = filters.status === null || filters.status === task.status
+        return inсludeBySearch && inсludeByCategory && inсludeByStatus;
     });
 })
 
 const clearFilter = () => {
-  filters.status.value = '';
+  filters.status = null;
+  filters.search = '';
+  filters.category = null;
 }
 
 const updateTaskList = () => {
     TaskListCacheManager.setList(taskList.value);
 }
 
-const openTaskCreator = () => {
-    showCreateTask.value = true;
+const openTaskCreator = (task?: ITaskItem) => {
+    if(!task) {
+        task = getDefaultTask()
+    }
+    detailInfoTask.value = clone(task);
 }
+
 const createTask = (task: ITaskItem) => {
-    task.id = taskList.value.length + 1
-    taskList.value.push(task);
+    detailInfoTask.value = null;
+    const editedIndex = taskList.value.findIndex(t=>t.id === task.id)
+    if(task.id >= 0 && editedIndex !== -1) {
+        taskList.value.splice(editedIndex, 1, task)
+    }
+    else {
+        task.id = taskList.value.length + 1
+        taskList.value.push(task);
+    }
+    updateTaskList();
+}
+
+const deleteTask = (id: number) => {
+    detailInfoTask.value = null;
+    const editedIndex = taskList.value.findIndex(t=>t.id === id)
+    if(editedIndex !== -1) {
+        taskList.value.splice(editedIndex, 1)
+    }
     updateTaskList();
 }
 
@@ -91,6 +134,7 @@ const createTask = (task: ITaskItem) => {
 
 <style scoped>
 .tasksHeader {
+    margin-top: 30px;
     display: flex;
     justify-content: space-between;
 }
