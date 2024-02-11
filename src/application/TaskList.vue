@@ -15,7 +15,6 @@
     <!--фильтры-->
 
     <TaskStatusFilter
-
         v-model:status="filters.status"
         class="statusFilter"
     />
@@ -29,7 +28,7 @@
                 :key="task.id"
                 :task="task"
                 class="task"
-                @update:status="updateTaskStatus(task, $event)"
+                @update:task="updateTask($event)"
                 @click="openTaskCreator(task)"
             />
         </div>
@@ -52,6 +51,13 @@
         @createTask="createTask($event)"
         @deleteTask="deleteTask($event)"
     />
+    <Transition name="fade">
+        <TaskListMenu
+            v-if="showMenu"
+            @cancel="clearAllSelected()"
+            @delete="deleteAllSelected()"
+        />
+    </Transition>
 </div>
 </template>
 
@@ -73,6 +79,7 @@ import type {TTaskStatus} from "@/Interface/TTaskStatus";
 import TaskListSearch from "@/components/taskList/filters/TaskListSearch.vue";
 import getDefaultTask from "@/libs/default/getDefaultTask";
 import clone from "@/libs/general/DeepClone";
+import TaskListMenu from "@/components/taskList/TaskListMenu.vue";
 
 
 const taskList = ref<ITaskItem[]>(TaskListCacheManager.getList() || []);
@@ -82,6 +89,10 @@ const filters = reactive({
     status: null as null|TTaskStatus,
     category: null as null|TTaskCategory,
     search: '',
+})
+
+const showMenu = computed<boolean>(() => {
+    return filteredList.value.some(el=> el.checked)
 })
 
 const filteredList = computed<ITaskItem[]>(()=> {
@@ -132,8 +143,20 @@ const deleteTask = (id: number) => {
     updateTaskList();
 }
 
-const updateTaskStatus = (task: ITaskItem, status: TTaskStatus) => {
-    task.status = status;
+const updateTask = (task: ITaskItem) => {
+    const editedIndex = taskList.value.findIndex(t=>t.id === task.id)
+    if(editedIndex !== -1) {
+        taskList.value.splice(editedIndex, 1, task)
+    }
+    updateTaskList();
+}
+
+const clearAllSelected = () => {
+    taskList.value.forEach(task => task.checked = false);
+    updateTaskList();
+}
+const deleteAllSelected = () => {
+    taskList.value = taskList.value.filter(task => !task.checked);
     updateTaskList();
 }
 

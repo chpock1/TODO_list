@@ -1,7 +1,7 @@
 <template>
 <section class="listElement">
     <div class="categoryWrap">
-        <input type="checkbox" @click.stop>
+        <IMCheckbox :value="task.checked" @change="updateChecked($event)"/>
         <h1
             :class="['category', categoryInfo.color_code]"
         >
@@ -15,7 +15,7 @@
                 <p
                     v-for="(status, value) of taskStatusList"
                     :key="value"
-                    @click="emits('update:status', value)"
+                    @click="updateStatus(value)"
                 >
                     {{status}}
                 </p>
@@ -25,7 +25,7 @@
     </div>
     <h2 class="title trim-lines">{{task.name}}</h2>
     <p class="description trim-lines">{{task.description}}</p>
-    <span class="elementStatus">{{taskStatusList[task.status]}}</span>
+    <div class="elementStatus">{{taskStatusList[task.status]}}</div>
 </section>
 
 
@@ -39,13 +39,16 @@ import type {ITaskItem} from "@/Interface/ITaskItem";
 
 import Action from "@/components/icons/Action";
 import IMPopover from "@/components/ui/IMPopover.vue";
+import clone from "@/libs/general/DeepClone";
+import type {TTaskStatus} from "@/Interface/TTaskStatus";
+import IMCheckbox from "@/components/ui/IMCheckbox.vue";
 
 interface IProps {
     task: ITaskItem,
 }
 
 interface IEmits {
-    (event: 'update:status', value: string,): void,
+    (event: 'update:task', task: ITaskItem,): void,
 }
 
 const props = defineProps<IProps>();
@@ -63,6 +66,19 @@ const categoryInfo = computed(() => {
         }
     }
 })
+
+const updateStatus = (status: TTaskStatus) => {
+    updateTask({status})
+}
+const updateChecked = (checked: boolean) => {
+    updateTask({checked})
+}
+
+
+const updateTask = (newFields: any) => {
+    const clonedTask = clone(props.task);
+    emits('update:task', Object.assign(clonedTask, newFields));
+}
 </script>
 
 <style scoped>
@@ -81,6 +97,7 @@ const categoryInfo = computed(() => {
 .category {
     color: var(--task-color);
     flex-basis: 100%;
+    font-size: 16px;
     margin: 0;
     margin-left: 5px;
 }
@@ -106,5 +123,9 @@ const categoryInfo = computed(() => {
     top: 0;
     width: 100%;
     height: 100%;
+}
+.elementStatus {
+    font-size: 12px;
+    text-align: right;
 }
 </style>

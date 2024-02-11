@@ -7,4 +7,5 @@ export interface ITaskItem {
     description: string,
     status: TTaskStatus,
     category: TTaskCategory|null,
+    checked: boolean,
 }

@@ -7,11 +7,8 @@
   --task-color-green: #14BCA8;
   --task-color-orange: #FD7C05;
   --task-color-red: #F44336;
+  --font-family-default: 'Manrope', sans-serif;
 }
-
-
-
-
 
 #app {
   max-width: 1200px;
@@ -19,6 +16,7 @@
   width: 100%;
   margin: auto 0;
   font-weight: normal;
+  font-family: var(--font-family-default);
 }
 #app:before {
   background: #f6f8fc;
@@ -165,4 +163,18 @@ input + .input-addon, select + .input-addon, input + .input-addon__required, sel
   -webkit-box-orient: vertical;
   overflow: hidden;
   white-space: normal;
+}
+
+
+
+.fade-enter-active {
+  transition: all 0.2s ease-out;
+}
+
+.fade-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.fade-enter-from, .slide-fade-leave-to {
+  opacity: 0;
 }

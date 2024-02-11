@@ -7,6 +7,7 @@ const task: ITaskItem = {
     description: "",
     status: 'hold',
     category: null,
+    checked: false,
 }
 const getDefaultTask = () => {
     return clone(task);
