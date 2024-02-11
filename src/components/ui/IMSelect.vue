@@ -5,6 +5,7 @@
 >
     <option
         v-for="option in options"
+        :key="option.value"
         :value="option.value"
     >
         {{ option.label }}
@@ -16,7 +17,6 @@
 <script setup lang="ts">
 import type {ISelectOption} from "@/Interface/ISelectOption";
 import {ref} from "vue";
-const lol = (a)=> console.log(a)
 interface IProps {
     value: string | number,
     options: ISelectOption<string | number>[],

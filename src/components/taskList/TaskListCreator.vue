@@ -6,7 +6,10 @@
         <input v-model="newTask.name"/>
 
         <div class="input-addon">Описание</div>
-        <input v-model="newTask.description"/>
+        <textarea v-model="newTask.description"/>
+
+        <div class="input-addon">Категория</div>
+        <textarea v-model="newTask.description"/>
 
         <button class="saveButton" @click="createTask()">Сохранить</button>
     </div>
@@ -37,6 +40,7 @@ const newTask = ref<ITaskItem>({
     name: "",
     description: "",
     status: 'hold',
+    category: null,
 })
 
 const createTask = () => {

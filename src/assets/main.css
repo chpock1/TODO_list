@@ -1,13 +1,21 @@
 
 :root {
   --header-height: 35px;
+
+  --task-color-blue: #0560FD;
+  --task-color-green: #14BCA8;
+  --task-color-orange: #FD7C05;
 }
 
+
+
+
+
 #app {
-  max-width: 1280px;
+  max-width: 1200px;
   min-width: 400px;
-  margin: var(--header-height) 0 auto;
-  padding: 2rem;
+  width: 100%;
+  margin: auto 0;
   font-weight: normal;
 }
 #app:before {
@@ -41,12 +49,8 @@ a,
   body {
     display: flex;
     place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -103,16 +107,29 @@ input + .input-addon, select + .input-addon, input + .input-addon__required, sel
 }
 
 button {
-  padding: 12px 15px;
-  font-size: 14px;
-  border: none;
+  padding: 15px 20px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 20px;
-  border-radius: 8px;
+  flex-shrink: 0;
   color: #fff;
   transition: all .2s;
-  background: linear-gradient(180deg,#4e60a4,#2e3f7f);
+  top: 26px;
+  left: 1230px;
+  border-radius: 4px;
+  background-color: #0560FD;
+  border-width: 0.5px;
+  border-color: #14BCA8;
+}
+
+.task-blue {
+  --task-color: var(--task-color-blue);
+}
+.task-green {
+  --task-color: var(--task-color-green);
+}
+.task-orange {
+  --task-color: var(--task-color-orange);
 }

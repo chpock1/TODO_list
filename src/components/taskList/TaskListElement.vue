@@ -29,7 +29,6 @@ const emits = defineEmits<IEmits>();
 
 <style scoped>
 .listElement {
-    margin-top: 15px;
     padding: 15px 20px;
     border-radius: 10px;
     background: #fff;

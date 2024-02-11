@@ -1,9 +1,10 @@
 import type {ITaskItem}     from "@/Interface/ITaskItem";
 import type {TTaskStatus}   from "@/Interface/TTaskStatus";
-import type {ISelectOption} from "@/Interface/ISelectOption";
+import type {TTaskCategory} from "@/Interface/TTaskCategory";
+import type {ITaskCategorySetting} from "@/Interface/ITaskCategorySetting";
 
 export function getCountTaskByType(taskList: ITaskItem[]) {
-    let count: Record<TTaskStatus, number> = {
+    const count: Record<TTaskStatus, number> = {
         done: 0,
         progress: 0,
         hold: 0,
@@ -15,7 +16,25 @@ export function getCountTaskByType(taskList: ITaskItem[]) {
 }
 
 export const taskStatusList: Record<TTaskStatus, string> = {
-    done:  'Выполнено',
+    done:  'Закрытые',
     progress:  'В процессе',
-    hold:  'Не начато',
+    hold:  'Нужно сделать',
+}
+
+export const taskCategoryList: Record<TTaskCategory, ITaskCategorySetting> = {
+    design: {
+        label: 'Дизайн',
+        value: 'design',
+        color_code: 'task-blue',
+    },
+    testing: {
+        label: 'Тестирование',
+        value: 'testing',
+        color_code: 'task-green',
+    },
+    development: {
+        label: 'Разработка',
+        value: 'development',
+        color_code: 'task-orange',
+    },
 }
