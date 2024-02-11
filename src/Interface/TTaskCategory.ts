@@ -1,1 +1,1 @@
-export type TTaskCategory = 'design' | 'testing' | 'development'
+export type TTaskCategory = 'design' | 'testing' | 'development';

@@ -1,8 +1,16 @@
 <template>
 <section class="listElement">
-    <p>Имя: {{task.name}}</p>
-    <p>Описание: {{task.description}}</p>
-    <p class="elementStatus">Статус: {{taskStatusList[task.status]}}</p>
+    <div class="d-flex">
+        <h1
+            v-if="categoryInfo"
+            :class="['category', categoryInfo.color_code]"
+        >
+            {{ categoryInfo.label }}
+        </h1>
+
+    </div>
+    <h2 class="title trim-lines">{{task.name}}</h2>
+    <p class="description trim-lines">{{task.description}}</p>
 </section>
 
 
@@ -11,7 +19,8 @@
 
 <script setup lang="ts">
 import type {ITaskItem} from "@/Interface/ITaskItem";
-import {taskStatusList} from "@/libs/taskList/TaskListHelper";
+import {taskCategoryList, taskStatusList} from "@/libs/taskList/TaskListHelper";
+import {computed} from "vue";
 
 interface IProps {
     task: ITaskItem,
@@ -25,6 +34,9 @@ interface IEmits {
 const props = defineProps<IProps>();
 const emits = defineEmits<IEmits>();
 
+const categoryInfo = computed(() => {
+    return props.task.category && taskCategoryList[props.task.category];
+})
 </script>
 
 <style scoped>
@@ -34,11 +46,30 @@ const emits = defineEmits<IEmits>();
     background: #fff;
     position: relative;
     cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
 }
-.elementStatus {
-    align-self: flex-end;
+.category {
+    color: var(--task-color);
+    flex-basis: 100%;
+    margin: 0;
+}
+.title {
+    font-weight: 600;
+    font-size: 16px;
+}
+.description {
+    --count-trim-lines: 2;
+    font-size: 14px;
+    position: relative;
+    height: 32px;
+}
+.description::after {
+    content: '';
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 90%);
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
 }
 </style>

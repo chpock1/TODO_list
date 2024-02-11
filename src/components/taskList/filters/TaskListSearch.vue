@@ -1,10 +1,8 @@
 <template>
-    <input v-model="localValue"/>
+    <input v-model="localValue" placeholder="Поиск по задачам.."/>
 </template>
 
 <script setup lang="ts">
-
-import type {TTaskStatus} from "@/Interface/TTaskStatus";
 import {ref, watch} from "vue";
 
 interface IProps {
@@ -20,10 +18,7 @@ const emits = defineEmits<IEmits>();
 
 const localValue = ref(props.search);
 
-const updateSearch = (search: string) => {
-    console.log(search)
-    emits('update:search', search)
-}
+const updateSearch = (search: string) => emits('update:search', search)
 
 watch(localValue, updateSearch.bind(localValue.value))
 </script>

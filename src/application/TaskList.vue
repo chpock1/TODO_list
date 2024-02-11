@@ -11,7 +11,7 @@
         />
         <button class="headerAddBtn" @click="openTaskCreator()">Добавить задачу</button>
     </div>
-    <p class="title">Список задач</p>
+    <h1 class="title">Список задач</h1>
     <!--фильтры-->
 
     <TaskStatusFilter
@@ -40,11 +40,12 @@
             @clearFilter="clearFilter"
         />
     </Transition>
+
     <!--окно создания задачи-->
     <TaskListCreator
         v-if="detailInfoTask !== null"
         :task="detailInfoTask"
-        :show="detailInfoTask !== null"
+        :show="true"
 
         @close="detailInfoTask = null"
         @createTask="createTask($event)"
@@ -63,12 +64,12 @@ import TaskListEmpty from "@/components/taskList/TaskListEmpty";
 import type {ITaskItem} from "@/Interface/ITaskItem";
 import TaskListCreator from "@/components/taskList/TaskListCreator.vue";
 import TaskListElement from "@/components/taskList/TaskListElement.vue";
-import TaskCategoryFilter from "@/components/taskList/TaskCategoryFilter.vue";
+import TaskCategoryFilter from "@/components/taskList/filters/TaskCategoryFilter.vue";
 import type {TTaskCategory} from "@/Interface/TTaskCategory";
 import TaskListLogo from "@/components/taskList/TaskListLogo.vue";
-import TaskStatusFilter from "@/components/taskList/TaskStatusFilter.vue";
+import TaskStatusFilter from "@/components/taskList/filters/TaskStatusFilter.vue";
 import type {TTaskStatus} from "@/Interface/TTaskStatus";
-import TaskListSearch from "@/components/taskList/TaskListSearch.vue";
+import TaskListSearch from "@/components/taskList/filters/TaskListSearch.vue";
 import getDefaultTask from "@/libs/default/getDefaultTask";
 import clone from "@/libs/general/DeepClone";
 
@@ -84,10 +85,10 @@ const filters = reactive({
 
 const filteredList = computed<ITaskItem[]>(()=> {
     return taskList.value.filter(task => {
-        const inсludeBySearch = (task.description + task.name).includes(filters.search)
-        const inсludeByCategory = filters.category === null || filters.category === task.category
-        const inсludeByStatus = filters.status === null || filters.status === task.status
-        return inсludeBySearch && inсludeByCategory && inсludeByStatus;
+        const bySearch = (task.description + task.name).includes(filters.search)
+        const byCategory = filters.category === null || filters.category === task.category
+        const byStatus = filters.status === null || filters.status === task.status
+        return bySearch && byCategory && byStatus;
     });
 })
 
@@ -143,6 +144,9 @@ const deleteTask = (id: number) => {
     font-size: 20px;
     font-weight: 800;
     line-height: 50px;
+    @media screen and (max-width: 670px) {
+        display: none;
+    }
 }
 .headerAddBtn {
     margin-left: 30px;
